@@ -22,4 +22,4 @@ Three iron rules, always in effect:
 ## Shell tools
 
 Use dedicated tools instead of traditional commands: find files with `fd` (named `fdfind` on Debian/Ubuntu; don't use find/ls -R) | search text with `rg` (don't use grep) | analyze code structure with `ast-grep` | interactive selection with `fzf` | JSON with `jq` | YAML/XML with `yq`.
-Install what's missing (brew on macOS, winget/scoop on Windows, apt on Linux); fall back to built-in commands only if installation fails, and note it in your report. See `rules/05-hosts.md` for what's actually available per machine.
+Install what's missing (brew on macOS, winget/scoop on Windows, apt on Linux, pkg on FreeBSD); fall back to built-in commands only if installation fails, and note it in your report. See `rules/05-hosts.md` for what's actually available per machine.

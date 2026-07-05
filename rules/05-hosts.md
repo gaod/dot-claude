@@ -9,12 +9,18 @@
 
 ## Probing checklist (run on first work session on a new machine)
 
-1. Identity: `hostname`, `uname -sm` (Darwin=macOS; MINGW*/MSYS*=Windows Git Bash; in PowerShell use `$env:OS`)
+1. Identity: `hostname`, `uname -sm` (Darwin=macOS; Linux; FreeBSD; MINGW*/MSYS*=Windows Git Bash; in PowerShell use `$env:OS`)
 2. Where the project root is; single-project or multi-project workstation
 3. Toolchain inventory (list only what's relevant to the user's work): `which xcodebuild mise swift node python3 go php cargo` (on Windows use `where`)
 4. CLI tools: `which rg fd fdfind ast-grep jq yq fzf gh`
 5. `gh auth status` (can we track CI / open PRs?)
 6. Special limitations: which kinds of projects **cannot run** on this machine, and what the alternative verification path is (the most important item — it directly determines how "done" in `20-judgment.md` is grounded)
+
+## Platform notes (platform-level facts; machine-level facts still go in the sections below)
+
+- Installing missing CLI tools: brew (macOS) | apt (Debian/Ubuntu) | winget/scoop (Windows) | **pkg** (FreeBSD — prefer `pkg install` over building from ports)
+- FreeBSD package naming (verified against the ports tree 2026-07-05): the `fd` binary comes from package `fd-find` (port `sysutils/fd`); `rg` from `ripgrep`; ast-grep is `textproc/ast-grep`
+- FreeBSD base system ships no bash (default shells are sh/tcsh) — run `pkg install bash` if needed, and don't assume bash-isms when writing probe commands
 
 ## Section template (copy and fill in)
 

@@ -7,7 +7,7 @@
 
 The user's environment may span multiple machines, and the same `~/.claude` system is synced to all of them. Therefore:
 
-1. Probe identity: `hostname` + `uname -s` (Darwin=macOS; Linux; MINGW*/MSYS*=Windows Git Bash)
+1. Probe identity: `hostname` + `uname -s` (Darwin=macOS; Linux; FreeBSD; MINGW*/MSYS*=Windows Git Bash)
 2. Find this machine's section in `05-hosts.md` and reuse its facts (for stale-looking sections, spot-check one or two items)
 3. No section found → run the probing checklist at the top of `05-hosts.md` and add the results as a new section (that file may be written to directly)
 4. **Never assume a toolchain exists**: before running any command a spec or doc requires, verify with `which` (or `command -v`); if absent, check `05-hosts.md` for the alternative verification path — do not install heavy toolchains on your own (see Risk 1 below)
@@ -16,7 +16,7 @@ The user's environment may span multiple machines, and the same `~/.claude` syst
 
 ### 1. Verification gap: the verification a spec demands may not run on the current machine (the top source of "fake done")
 
-**Symptom**: a project spec says "run the tests and make sure they pass," but the machine may lack the required toolchain (e.g., iOS projects can't compile on Linux/Windows). Models then head toward three bad endings: (a) try to install the toolchain and fail after burning many tokens; (b) claim "tests pass" without running them (most dangerous); (c) get stuck.
+**Symptom**: a project spec says "run the tests and make sure they pass," but the machine may lack the required toolchain (e.g., iOS projects can't compile on Linux/Windows/FreeBSD). Models then head toward three bad endings: (a) try to install the toolchain and fail after burning many tokens; (b) claim "tests pass" without running them (most dangerous); (c) get stuck.
 
 **Fix**:
 - Probe first per the protocol above; on machines that can't run it, do static verification only (`rg` / `ast-grep` against conventions) and route dynamic verification through CI — push branch → PR → `gh pr checks` until green. See `05-hosts.md` for each machine's concrete path.
