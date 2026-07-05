@@ -1,0 +1,57 @@
+# 00 — Environment Diagnosis & Probing Protocol
+
+> This file holds only conclusions that are true across machines; single-machine facts always go in `05-hosts.md`.
+> When facts go stale, update this file per the process in `40-maintenance.md` — don't create a new file.
+
+## Environment probing protocol (every machine, before every multi-step task)
+
+The user's environment may span multiple machines, and the same `~/.claude` system is synced to all of them. Therefore:
+
+1. Probe identity: `hostname` + `uname -s` (Darwin=macOS; Linux; MINGW*/MSYS*=Windows Git Bash)
+2. Find this machine's section in `05-hosts.md` and reuse its facts (for stale-looking sections, spot-check one or two items)
+3. No section found → run the probing checklist at the top of `05-hosts.md` and add the results as a new section (that file may be written to directly)
+4. **Never assume a toolchain exists**: before running any command a spec or doc requires, verify with `which` (or `command -v`); if absent, check `05-hosts.md` for the alternative verification path — do not install heavy toolchains on your own (see Risk 1 below)
+
+## The three structural risks and their fixes (hold across machines, by severity)
+
+### 1. Verification gap: the verification a spec demands may not run on the current machine (the top source of "fake done")
+
+**Symptom**: a project spec says "run the tests and make sure they pass," but the machine may lack the required toolchain (e.g., iOS projects can't compile on Linux/Windows). Models then head toward three bad endings: (a) try to install the toolchain and fail after burning many tokens; (b) claim "tests pass" without running them (most dangerous); (c) get stuck.
+
+**Fix**:
+- Probe first per the protocol above; on machines that can't run it, do static verification only (`rg` / `ast-grep` against conventions) and route dynamic verification through CI — push branch → PR → `gh pr checks` until green. See `05-hosts.md` for each machine's concrete path.
+- Iron rule: **never claim "tests pass" without test output or a CI run URL as evidence.** Always grade reports: verified (with evidence) / pending CI / unverified.
+- Detailed criteria: see "Definition of Done" in `20-judgment.md`.
+
+### 2. Bloated fixed context: thousands of tokens leak at the start of every session
+
+**Symptom**:
+- A project CLAUDE.md stuffed with directory trees, templates, and tables (tens of KB is common) gets fully loaded every session.
+- Connected MCP connectors and plugins inject large numbers of tool names into every session — most irrelevant to the project at hand.
+
+**Fix**:
+- Keep project CLAUDE.md to "hard rules + routing"; extract details into referenced files loaded on demand.
+- [Requires user action] Disconnect unused connectors; CLI plugins can be disabled per project in `.claude/settings.json` (see the verified findings at the bottom for syntax).
+- Note to models: deferred MCP tools inject only their names — don't proactively ToolSearch schemas unrelated to the task.
+
+### 3. The main thread doing grunt work + compaction amnesia: quality collapses mid-way through long tasks
+
+**Symptom**: the main conversation does heavy file reading, repo scanning, and build-log reading itself; context balloons; after compaction triggers, early decisions are lost and the model starts redoing finished work or drifting from the original goal. This is structural, machine-independent.
+
+**Fix**:
+- Heavy reads (>10 files or >2000 lines), full-repo scans, web research, batch file edits, acceptance — dispatch a subagent; the main conversation takes conclusions only. See `10-dispatch.md`.
+- At the start of a multi-step task, create a task-state file in the scratchpad (goal / acceptance criteria / done / todo) and update it after each step. After compaction, use it to recover state.
+- Write facts worth keeping across sessions into the memory mechanism (if the harness provides one). Note that memory is local to each machine — machine-bound facts must say which machine they apply to.
+
+## Verified findings (checked against official docs 2026-07; re-verify after version changes)
+
+- **Subagent definition frontmatter** (supported in both `.claude/agents/*.md` and `~/.claude/agents/*.md`):
+  Available fields include `name`, `description`, `tools`, `model`, `effort`, `maxTurns`, `memory`, etc.
+  `effort` values: `low` / `medium` / `high` / `xhigh` (`max` is session-only, cannot go in frontmatter).
+  `model` values: `haiku` / `sonnet` / `opus` / full model ID / `inherit`.
+  There is no per-subagent thinking setting; subagents inherit the main conversation's thinking configuration.
+  (Source: code.claude.com/docs/en/sub-agents.md, model-config.md)
+- **Disabling a plugin per project**: in the project's `.claude/settings.json`, write
+  `"enabledPlugins": { "<plugin>@<marketplace>": false }` to override the global setting.
+- **`effortLevel`** (settings.json): values `low` / `medium` / `high` / `xhigh`; project level overrides global.
+- **claude.ai-bound MCP connectors** (tool prefix `mcp__claude_ai_*`): **no official mechanism found** for project-level disabling — they can only be disconnected on the claude.ai side. When this matters, confirm with the user first; don't guess at settings.
