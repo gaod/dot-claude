@@ -21,8 +21,31 @@ The user's environment may span multiple machines, and the same `~/.claude` syst
 
 1. Probe identity: `hostname` + `uname -s` (Darwin=macOS; Linux; FreeBSD; MINGW*/MSYS*=Windows Git Bash)
 2. Find this machine's section in `~/.claude/hosts.md` and reuse its facts (for stale-looking sections, spot-check one or two items)
-3. No section found → run the probing checklist at the top of `hosts.md` and add the results as a new section (that file may be written to directly)
+3. No section found → run the probing checklist below and add the results as a new section per the section template (that file may be written to directly). No `hosts.md` at all → create it from `hosts.example.md` if present, otherwise start it with just this machine's section
 4. **Never assume a toolchain exists**: before running any command a spec or doc requires, verify with `which` (or `command -v`); if absent, check `hosts.md` for the alternative verification path — do not install heavy toolchains on your own (see Risk 1 below)
+
+**Privacy**: `hosts.md` contains hostnames, project paths, and auth status; it is gitignored runtime data. Never commit it, quote it into files that get committed, or paste its contents into externally visible places (PRs, issues, messages).
+
+## Probing checklist (run on first work session on a new machine)
+
+1. Identity: `hostname`, `uname -sm` (Darwin=macOS; Linux; FreeBSD; MINGW*/MSYS*=Windows Git Bash; in PowerShell use `$env:OS`)
+2. Where the project root is; single-project or multi-project workstation
+3. Toolchain inventory (list only what's relevant to the user's work): `which xcodebuild mise swift node python3 go php cargo` (on Windows use `where`)
+4. CLI tools: `which rg fd fdfind ast-grep jq yq fzf gh`
+5. `gh auth status` (can we track CI / open PRs?)
+6. Special limitations: which kinds of projects **cannot run** on this machine, and what the alternative verification path is (the most important item — it directly determines how the Definition of Done in the `verify-deliverable` skill is grounded)
+
+## Section template (copy into `hosts.md` and fill in)
+
+```markdown
+## <hostname> — <one-line description> (<OS arch>) | verified <YYYY-MM-DD>
+
+- Project root: <path>; <single-project / multi-project workstation>
+- Toolchain: <what's available; project types that can't run and their alternative verification paths>
+- CLI: <rg/fd/jq/... availability and naming differences>
+- gh: <logged in or not; can it track CI>
+- Special limitations: <e.g., no Apple toolchain — iOS projects verify via CI (push → PR → gh pr checks)>
+```
 
 ## The three structural risks and their fixes (hold across machines, by severity)
 

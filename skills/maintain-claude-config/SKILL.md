@@ -15,8 +15,8 @@ description: Use when creating or modifying anything under ~/.claude — CLAUDE.
 | `skills/task-kickoff/SKILL.md` | Probing protocol & verified findings | ✅ Update stale facts (with test evidence); don't remove the "three structural risks" framework |
 | `skills/delegate-work/*` / `skills/verify-deliverable/SKILL.md` | System core | ⚠️ Adding entries is fine; **modifying or deleting existing rubrics requires asking the user first** |
 | `skills/maintain-claude-config/SKILL.md` (this file) | Constitution | ❌ Ask the user before touching |
-| `hosts.md` | Per-machine facts | ✅ New machine sections may be added freely; stale facts may be updated (with verification date) |
-| `lessons.md` | Lessons log | ✅ Append anytime (append-only) |
+| `hosts.md` | Per-machine facts (**gitignored** — hostnames, paths, auth status; never commit or quote into committed files) | ✅ New machine sections may be added freely; stale facts may be updated (with verification date) |
+| `lessons.md` | Lessons log (**gitignored** — contains project names) | ✅ Append anytime (append-only) |
 | `agents/*.md` | Agent definitions | ✅ New roles may be added; changing an existing role's duties — ask first |
 | `~/.claude/CLAUDE.md` | Global routing | ⚠️ Only add/fix routing lines; never stuff long content back in |
 | Each project's `CLAUDE.md` | **Team-shared, checked in** | ❌ Content changes require asking the user first (teammates use it too); same for its referenced files |

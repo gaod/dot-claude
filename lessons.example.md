@@ -1,5 +1,6 @@
 # Lessons Log (append-only)
 
+> **This is a seed file.** The live copy is `~/.claude/lessons.md` — gitignored, because lessons accumulate project names and environment details that don't belong in a public repo.
 > Format: `- [YYYY-MM-DD][project or global] situation → lesson → applied to: {file or "not yet"}`
 > Writing threshold and slimming rules: see the `maintain-claude-config` skill.
 > The entries below are generic seed lessons (from the fieldwork that produced this system); if you fork this repo, consider clearing them and accumulating your own.

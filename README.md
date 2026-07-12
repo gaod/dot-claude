@@ -23,10 +23,13 @@ cp -r ~/.claude ~/.claude.backup-$(date +%F) 2>/dev/null
 # Drop in the system files (won't overwrite other runtime files under ~/.claude)
 cp CLAUDE.md ~/.claude/CLAUDE.md      # if you already have a global CLAUDE.md, merge in the skill map and shell-tools sections
 cp -r rules skills agents ~/.claude/
-cp hosts.md lessons.md ~/.claude/
+cp -n hosts.example.md ~/.claude/hosts.md      # -n: don't overwrite live machine data on reinstall
+cp -n lessons.example.md ~/.claude/lessons.md
 ```
 
-After installing, **no environment info needs to be filled in manually**: `hosts.md` ships empty, carrying only a probing checklist. The first time you run a multi-step task in Claude Code on each machine, the AI probes automatically per the protocol in the `task-kickoff` skill (hostname, OS, toolchain, CLI tools, CI channel) and writes the results as that machine's section. Later sessions just look it up.
+**Privacy note**: the live `hosts.md` and `lessons.md` accumulate hostnames, home/project paths, `gh` auth status, and project names. The repo ships only `*.example.md` seeds and gitignores the live filenames — so you can manage `~/.claude` itself as a clone of this repo without machine facts ever landing in version control. If you sync `~/.claude` across machines by other means, keep these two files out of anything public.
+
+After installing, **no environment info needs to be filled in manually**: `hosts.md` starts with no machine sections. The first time you run a multi-step task in Claude Code on each machine, the AI probes automatically per the protocol in the `task-kickoff` skill (hostname, OS, toolchain, CLI tools, CI channel) and writes the results as that machine's section. Later sessions just look it up.
 
 ## File structure
 
@@ -39,8 +42,9 @@ After installing, **no environment info needs to be filled in manually**: `hosts
 | `skills/delegate-work/templates.md` | Five delegation prompt templates (search / implementation / refactoring / research / review) | On demand |
 | `skills/verify-deliverable/SKILL.md` | Definition of Done, verification tiers and per-type minimums, honesty clause | On demand |
 | `skills/maintain-claude-config/SKILL.md` | Ownership and safe-modification process for the system files | On demand |
-| `hosts.md` | Per-machine facts (ships empty; the AI fills it in automatically) | Never (data) |
-| `lessons.md` | Pitfall log (append-only, with format and threshold) | Never (data) |
+| `hosts.example.md` | Seed for `~/.claude/hosts.md` — per-machine facts, filled in automatically by the AI; live file is gitignored | Never (data) |
+| `lessons.example.md` | Seed for `~/.claude/lessons.md` — pitfall log (append-only); live file is gitignored | Never (data) |
+| `.gitignore` | Keeps live machine data and Claude Code runtime state out of version control | — |
 | `agents/verifier.md` | Subagent definition for the fresh-context acceptance reviewer | On dispatch |
 
 ## Core ideas (the three iron rules)
