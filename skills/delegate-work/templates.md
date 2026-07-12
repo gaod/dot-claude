@@ -1,8 +1,8 @@
-# 30 — Delegation Prompt Templates
+# Delegation Prompt Templates
 
 > Usage: copy the matching template, fill in the `{...}` blanks, and use it as the Agent tool's `prompt`.
 > Every template has the trio built in (goal & motivation / acceptance criteria / report format). Don't delete those sections — vague acceptance criteria are the #1 path to system decay.
-> Model selection principles: see `10-dispatch.md`.
+> Model selection principles: see `SKILL.md` in this directory.
 
 ## 1. Search / locate (subagent_type: `Explore`, no model needed)
 
@@ -60,7 +60,7 @@ Report format: conclusions (≤10 lines) + itemized facts with sources. Long rep
 
 ## 5. Review / acceptance (subagent_type: `verifier`; or `claude` + model: `opus` for high-risk adversarial review)
 
-> Use this template when a `20-judgment.md` §5 trigger fires. Low-risk changes that pass the §5 self-acceptance conditions don't need it — closing them on mechanical evidence is correct, not a shortcut.
+> Use this template when a verifier trigger from the `verify-deliverable` skill fires. Low-risk changes that pass its self-acceptance conditions don't need it — closing them on mechanical evidence is correct, not a shortcut.
 > If the current session's available-agents list has no `verifier` (definition at `~/.claude/agents/verifier.md`; it won't appear when the harness hasn't loaded it), use `subagent_type: "claude"` and paste verifier.md's body rules at the top of the prompt.
 
 ```
@@ -76,5 +76,5 @@ Report format: PASS/FAIL per item + evidence, answer to the open question. Retur
 
 ## General notes (all templates)
 
-- When delegating, write the current machine's environment limits into the prompt (check `05-hosts.md`, e.g.: this machine can't compile a given project type, verification goes through CI) — otherwise the subagent will crash into the same wall itself.
+- When delegating, write the current machine's environment limits into the prompt (check `~/.claude/hosts.md`, e.g.: this machine can't compile a given project type, verification goes through CI) — otherwise the subagent will crash into the same wall itself.
 - After a subagent reports, the main conversation spot-checks at least one cheaply verifiable claim (one `rg`, one read) before trusting the report as a whole.

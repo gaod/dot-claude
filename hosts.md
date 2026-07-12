@@ -1,8 +1,8 @@
-# 05 — Per-Host Facts
+# Per-Host Facts
 
-> The user's environment may span multiple machines. The rules files (00–40) are always environment-neutral;
-> every "what can this machine do" fact lives only in this file. Usage: see the probing protocol in `00-diagnosis.md`.
-> One section per machine; every fact must carry the date it was verified. Update stale facts on sight (this file may be modified directly, see `40-maintenance.md`).
+> The user's environment may span multiple machines. The skills are always environment-neutral;
+> every "what can this machine do" fact lives only in this file. Usage: see the probing protocol in the `task-kickoff` skill.
+> One section per machine; every fact must carry the date it was verified. Update stale facts on sight (this file may be modified directly, see the `maintain-claude-config` skill).
 >
 > **This file ships with no machine sections — that is deliberate.**
 > AI: when you're working on a machine with no section here, run the checklist below and add the results as a new section (follow the "Section template").
@@ -14,7 +14,7 @@
 3. Toolchain inventory (list only what's relevant to the user's work): `which xcodebuild mise swift node python3 go php cargo` (on Windows use `where`)
 4. CLI tools: `which rg fd fdfind ast-grep jq yq fzf gh`
 5. `gh auth status` (can we track CI / open PRs?)
-6. Special limitations: which kinds of projects **cannot run** on this machine, and what the alternative verification path is (the most important item — it directly determines how "done" in `20-judgment.md` is grounded)
+6. Special limitations: which kinds of projects **cannot run** on this machine, and what the alternative verification path is (the most important item — it directly determines how the Definition of Done in the `verify-deliverable` skill is grounded)
 
 ## Platform notes (platform-level facts; machine-level facts still go in the sections below)
 
