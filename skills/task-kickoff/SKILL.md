@@ -52,7 +52,7 @@ The user's environment may span multiple machines, and the same `~/.claude` syst
 **Symptom**: the main conversation does heavy file reading, repo scanning, and build-log reading itself; context balloons; after compaction triggers, early decisions are lost and the model starts redoing finished work or drifting from the original goal. This is structural, machine-independent.
 
 **Fix**:
-- Heavy reads (>10 files or >2000 lines), full-repo scans, web research, batch file edits, acceptance — dispatch a subagent; the main conversation takes conclusions only. See the `delegate-work` skill.
+- Heavy reads (>10 files or >2000 lines), full-repo scans, web research, batch file edits, and acceptance when a verifier trigger from the `verify-deliverable` skill fires — dispatch a subagent; the main conversation takes conclusions only. See the `delegate-work` skill. (Low-risk work that passes the self-acceptance conditions closes on mechanical evidence — no dispatch needed.)
 - At the start of a multi-step task, create a task-state file in the scratchpad (goal / acceptance criteria / done / todo) and update it after each step. After compaction, use it to recover state.
 - Write facts worth keeping across sessions into the memory mechanism (if the harness provides one). Note that memory is local to each machine — machine-bound facts must say which machine they apply to.
 
