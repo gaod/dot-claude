@@ -28,7 +28,8 @@ Check every item before claiming completion; one missing item means "not done," 
 
 - ≤2 files and ≤30 changed lines
 - No behavior change, and the files aren't referenced by other rules/skills/routing files
-- Fully reversible (`git revert` suffices)
+- No external side effects or persistent state changes (nothing left the repo: no pushes, no messages, no config or data writes)
+- Every changed hunk is attributable to this task, so reverting it cannot touch pre-existing user work
 
 Evidence must be mechanical — diff read-back, `rg` counts, test/lint output. The producer's *opinion* ("looks fine," "should be right") is never evidence; the producer's *mechanical output* is.
 
