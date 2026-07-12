@@ -23,8 +23,8 @@ description: Use when creating or modifying anything under ~/.claude — CLAUDE.
 
 ## Standard file-change procedure
 
-1. Back up: `cp <file> ~/.claude/backups/<name>.$(date +%F).bak` (create the backups directory if it doesn't exist)
-2. Modify (prefer adding new sections over touching existing text)
+1. Back up: `cp <file> ~/.claude/backups/<name>.$(date +%Y%m%d-%H%M%S).bak` (create the backups directory if it doesn't exist; PowerShell: `Copy-Item <file> ~/.claude/backups/<name>.$(Get-Date -Format yyyyMMdd-HHmmss).bak`)
+2. Modify: make the **smallest coherent edit** — replace obsolete guidance outright rather than layering exceptions underneath it (a rule with three patches is harder to execute than a rewritten rule)
 3. Verify: dispatch the `verifier` agent for read-back; acceptance criteria must at least include "no contradictions with the other system files" and "referenced paths/commands actually exist"
 4. If the change is inside a project: don't commit it yourself — leave it for the user to review
 
@@ -44,12 +44,12 @@ Write to `~/.claude/lessons.md`, one line per lesson, format:
 ```
 
 Threshold for "worth writing": this pitfall would cost the next session ≥10 minutes, and it's not visible from the repo/git log.
-Hitting the same pitfall twice = it should graduate from lessons into a formal rubric (propose a change to the `verify-deliverable` or `delegate-work` skill via the "ask the user first" process).
+Hitting the same pitfall twice = it should graduate from lessons into a formal rubric (propose a change to the `verify-deliverable` or `delegate-work` skill via the "ask the user first" process). After promotion, move the lesson line to `~/.claude/lessons.archive.md` — the log stays append-only for active lessons; the archive preserves history instead of deleting it.
 
 ## Slimming protocol (anti-bloat)
 
 - Trigger: `lessons.md` exceeds 40 entries, or any skill file exceeds 300 lines, or `rules/safety-and-quality.md` exceeds 40 lines
-- Action: delete lessons already promoted to formal rubrics; archive stale facts to `~/.claude/backups/`; merge duplicates
+- Action: move lessons already promoted to formal rubrics into `~/.claude/lessons.archive.md`; archive stale facts to `~/.claude/backups/`; merge duplicates
 - Slimming means "move and merge," not "rewrite" — rewriting an entire system file requires the user's consent
 
 ## Reference integrity (anti-broken-links)
