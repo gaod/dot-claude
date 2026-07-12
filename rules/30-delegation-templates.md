@@ -60,6 +60,7 @@ Report format: conclusions (≤10 lines) + itemized facts with sources. Long rep
 
 ## 5. Review / acceptance (subagent_type: `verifier`; or `claude` + model: `opus` for high-risk adversarial review)
 
+> Use this template when a `20-judgment.md` §5 trigger fires. Low-risk changes that pass the §5 self-acceptance conditions don't need it — closing them on mechanical evidence is correct, not a shortcut.
 > If the current session's available-agents list has no `verifier` (definition at `~/.claude/agents/verifier.md`; it won't appear when the harness hasn't loaded it), use `subagent_type: "claude"` and paste verifier.md's body rules at the top of the prompt.
 
 ```

@@ -22,7 +22,7 @@ Check every item before claiming completion; one missing item means "not done," 
 
 - [ ] The deliverable exists and is complete (files: read back; code: re-read your own diff)
 - [ ] Acceptance criteria checked one by one (they should have been written at kickoff; if not, write them now, then check)
-- [ ] Dynamic verification has evidence: test output, a real run, or a CI run link. **Projects this machine can't run (check `05-hosts.md` first) may only claim "static checks done, pending CI"**
+- [ ] Verification matches the tier (see §5): mechanical evidence for low-risk work; fresh-context verifier when a trigger fires. **Projects this machine can't run (check `05-hosts.md` first) may only claim "static checks done, pending CI"**
 - [ ] Tests and docs updated along with the change (changed behavior without touching tests = not done)
 - [ ] No "should," "probably," or "in theory" qualifying the core conclusions of the report
 
@@ -33,7 +33,7 @@ Check every item before claiming completion; one missing item means "not done," 
 
 Self-check first: can the answer come from the repo, git log, docs, or one cheap experiment? If yes, don't ask. The following cases **require** asking:
 
-- Irreversible or externally visible actions: force push, branch deletion, outbound messages (Slack / email / issue tracker, etc.), shared-config changes, releases
+- Irreversible or externally visible actions: force push, branch deletion, outbound messages (Slack / email / issue tracker, etc.), shared-config changes, releases (iron rule 2 — applies regardless of verification tier)
 - The requirement is ambiguous and a wrong guess wastes 30+ minutes of work
 - Two rules files conflict with no priority order to follow
 - An existing file's content contradicts the user's description (present the contradiction; don't overwrite per the description)
@@ -54,13 +54,35 @@ On any of these signals: **stop → return to the last known-good state (git sta
 ✅ Positive: realizing the test can only pass by mocking half the system — stop, suspect the test is cut at the wrong layer, go back to the project's testing guidelines, re-pick the entry point.
 ❌ Negative: tests keep failing, so you loosen the assertions until they're green — that's not a fix, that's destroying evidence.
 
-## 5. Minimum verification per deliverable type
+## 5. Verification: tiers first, then per-type minimums
 
-The minimum verification for each kind of output; if you can't do it, say so explicitly in the report:
+### Verification tiers (check triggers, not vibes)
+
+**Self-acceptance on mechanical evidence** is allowed only when ALL hold:
+
+- ≤2 files and ≤30 changed lines
+- No behavior change, and the files aren't referenced by other rules/routing files
+- Fully reversible (`git revert` suffices)
+
+Evidence must be mechanical — diff read-back, `rg` counts, test/lint output. The producer's *opinion* ("looks fine," "should be right") is never evidence; the producer's *mechanical output* is.
+
+**Fresh-context verifier is REQUIRED** if ANY trigger fires:
+
+- New rules/agent/routing file, or edits to a file other files route to
+- Doc/rules changes >30 lines or ≥3 files
+- Security-sensitive change, data migration, release artifact, cross-module refactor
+- The producer cannot name a mechanical check that would catch its own most likely error
+
+Authorization is a separate axis: irreversible or externally visible actions follow iron rule 2 (ask the user) regardless of tier — a verifier PASS is not authorization.
+
+✅ Positive: fixed two typos in a README (1 file, 4 lines, referenced by nothing) — re-read the diff, done. No verifier needed.
+❌ Negative: rewrote `10-dispatch.md`'s model table and self-approved it because "it's just docs" — that file is routed to by CLAUDE.md and read by every future session; trigger 1 fires, send it to `verifier`.
+
+### Per-type minimums (apply on top of the tier)
 
 | Deliverable | Minimum verification |
 |------|----------|
-| Docs / rules files | Fresh-agent read-back: give only the acceptance criteria and let it judge item by item (use the `verifier` agent) |
+| Docs / rules files | Per the tiers above; when a trigger fires, fresh-agent read-back judging each acceptance criterion (use the `verifier` agent) |
 | Code (repo this machine can run locally) | Run the module's tests + lint, paste the output |
 | Code (repo this machine can't run, see `05-hosts.md`) | Static consistency (`rg` against existing conventions) + push and watch `gh pr checks` |
 | Batch file edits | Sample read-back ≥ 3 files + `rg` to confirm no stragglers (count check: expected N changes, actual N) |

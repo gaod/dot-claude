@@ -24,8 +24,8 @@ After installing, **no environment info needs to be filled in manually**: `rules
 | `CLAUDE.md` | Routing table + three iron rules, auto-loaded every session (goes in `~/.claude/`) |
 | `rules/00-diagnosis.md` | Environment probing protocol + three structural risks (fake completion / bloated context / compaction amnesia) and their fixes |
 | `rules/05-hosts.md` | Per-machine facts (ships empty; the AI fills it in automatically) |
-| `rules/10-dispatch.md` | Dispatch rules: when to use subagents, the delegation trio, report contract, model/effort selection, never self-verify |
-| `rules/20-judgment.md` | Judgment rubrics: when to escalate / what counts as done / when to ask the user / when to change course / minimum verification — each with positive & negative examples |
+| `rules/10-dispatch.md` | Dispatch rules: when to use subagents, the delegation trio, report contract, model/effort selection, acceptance rules |
+| `rules/20-judgment.md` | Judgment rubrics: when to escalate / what counts as done / when to ask the user / when to change course / verification tiers and per-type minimums — each with positive & negative examples |
 | `rules/30-delegation-templates.md` | Five delegation prompt templates (search / implementation / refactoring / research / review) |
 | `rules/40-maintenance.md` | Ownership and safe-modification process for the system files |
 | `rules/50-lessons.md` | Pitfall log (append-only, with format and threshold) |
@@ -33,16 +33,18 @@ After installing, **no environment info needs to be filled in manually**: `rules
 
 ## Core ideas (the three iron rules)
 
+The canonical wording lives in `CLAUDE.md` (auto-loaded every session); in brief:
+
 1. **Never claim completion without evidence** — grade reports: verified (with test output / CI link) / pending CI / unverified
-2. **External actions require explicit authorization in the current session** — messages, email, merging PRs, pushing shared branches
-3. **Never self-verify** — acceptance goes to a fresh-context subagent, not a context-inheriting fork
+2. **External actions require explicit authorization in the current session** — messages, email, merging PRs, pushing shared branches; applies regardless of verification tier
+3. **The producer's judgment is never acceptance evidence** — low-risk work closes on mechanical evidence (diff read-back, `rg` counts, test output); anything hitting a verifier trigger (`rules/20-judgment.md` §5) goes to a fresh-context subagent, never a context-inheriting fork
 
 ## Known decay modes and prevention (maintainers, read this)
 
 1. **Ritualization**: templates copied but acceptance criteria written as empty phrases → criteria must be mechanically checkable; verifier FAILs vague criteria on sight
 2. **Bloat**: every pitfall stuffed into CLAUDE.md → lessons go only to `50-lessons.md`; promotion to formal rubric goes through the `40-maintenance.md` process; line-count thresholds trigger slimming
 3. **Broken routing**: files renamed, routing points at nonexistent paths → `rg`-scan references before renames; broken links are P0
-4. **Verification decaying into self-review**: catching yourself writing "looks fine" is the signal
+4. **Verification decaying into self-review**: catching yourself writing "looks fine" is the signal. The tier system has its own decay mode: the low-risk exemption creeping upward ("this 80-line rewrite *feels* small") — the §5 conditions are numeric precisely so this creep is detectable
 5. **Bootstrap relies on discipline alone**: the system's only load point is the CLAUDE.md routing, with no enforcement mechanism → the iron rules are embedded directly in the auto-loaded CLAUDE.md; for a stronger guarantee, add your own SessionStart hook
 
 ## Honesty clause: what this system cannot fix

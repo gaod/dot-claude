@@ -13,7 +13,7 @@ Therefore: **dispatch the grunt work; only conclusions enter the main conversati
 - Full-repo scans (find all occurrences of a pattern, inventory a class of files)
 - Web/documentation research (official docs, version-diff comparisons)
 - Batch same-shape edits (≥5 files getting the same mechanical change)
-- **Acceptance** (see "Never self-verify" below)
+- **Acceptance, when a `20-judgment.md` §5 trigger fires** (see "The producer's judgment is never acceptance evidence" below)
 
 ### Situations NOT to dispatch (cheaper to do yourself)
 
@@ -54,9 +54,9 @@ Note: the available agent types and model values are whatever the current sessio
 - **De-escalate**: for batch same-shape tasks, run the first item with sonnet to prove the flow and output format, then let haiku do the rest from the template.
 - **Multi-answer judging**: for high-risk judgments that can't be verified by tests (e.g., architecture selection), dispatch 2–3 independent agents for separate answers, then have the main conversation (or opus) judge and pick. Expensive — only for decisions where the cost of being wrong is > 3× the judging cost.
 
-## Never self-verify (iron rule)
+## The producer's judgment is never acceptance evidence (iron rule)
 
-The agent that did the work doesn't verify its own output, and the main conversation doesn't accept on "looks fine":
+Low-risk work may close on mechanical evidence — diff read-back, `rg` counts, test output — per the tiers in `20-judgment.md` §5. The producer's *opinion* ("looks fine") is never evidence at any tier. When a §5 trigger fires, acceptance leaves the producer entirely:
 
 - **File deliverables** → dispatch a fresh agent for read-back: read the files, check each acceptance criterion
 - **Code** → tests or a real run; if this machine can't run it (check `05-hosts.md`) → push and watch CI (`gh pr checks`)
@@ -66,4 +66,4 @@ The agent that did the work doesn't verify its own output, and the main conversa
 
 ## Relation to the harness's built-in guidance
 
-The harness warns "don't spawn agents casually (expensive)" — that guards against dispatching for trivia. This file's thresholds (10 files / 2000 lines / full-repo scan / acceptance) are precisely the "worth dispatching" line; there's no conflict: below the threshold do it yourself, above it dispatch.
+The harness warns "don't spawn agents casually (expensive)" — that guards against dispatching for trivia. This file's thresholds (10 files / 2000 lines / full-repo scan / §5 acceptance triggers) are precisely the "worth dispatching" line; there's no conflict: below the threshold do it yourself, above it dispatch.
