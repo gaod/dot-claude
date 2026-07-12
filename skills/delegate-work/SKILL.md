@@ -88,7 +88,7 @@ On any of these signals: **stop → return to the last known-good state (git sta
 Low-risk work may close on mechanical evidence — diff read-back, `rg` counts, test output — per the tiers in the `verify-deliverable` skill. The producer's *opinion* ("looks fine") is never evidence at any tier. When a verifier trigger fires, acceptance leaves the producer entirely:
 
 - **File deliverables** → dispatch a fresh agent for read-back: read the files, check each acceptance criterion
-- **Code** → tests or a real run; if this machine can't run it (check `~/.claude/hosts.md`) → push and watch CI (`gh pr checks`)
+- **Code** → tests or a real run; if this machine can't run it (check `~/.claude/hosts.md`) → push and watch CI (`gh pr checks`) — only if pushing was authorized this session; otherwise report "locally verified" with the CI-trigger commands
 - **High-risk judgments** → second opinion (an independent agent that hasn't seen the first answer; compare conclusions)
 - The acceptance agent must have **fresh context** (a newly spawned `claude` or `verifier`), **never `fork`** — a fork inherits the main conversation's context, along with its biases and blind spots
 - Give the acceptance prompt an "acceptance criteria list," not a leading framing like "I think it's done, please confirm"

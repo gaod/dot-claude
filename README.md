@@ -47,8 +47,8 @@ After installing, **no environment info needs to be filled in manually**: `hosts
 
 The canonical wording lives in `rules/safety-and-quality.md` (auto-loaded every session); in brief:
 
-1. **Never claim completion without evidence** — grade reports: verified (with test output / CI link) / pending CI / unverified
-2. **External actions require explicit authorization in the current session** — messages, email, merging PRs, pushing shared branches; applies regardless of verification tier
+1. **Never claim completion without evidence** — grade reports: verified / locally verified / pending CI / unverified
+2. **External actions require explicit authorization in the current session** — messages, email, merging PRs, pushing shared branches; applies regardless of verification tier, and needing CI for verification does not by itself grant it
 3. **The producer's judgment is never acceptance evidence** — low-risk work closes on mechanical evidence (diff read-back, `rg` counts, test output); anything hitting a verifier trigger (`verify-deliverable` skill) goes to a fresh-context subagent, never a context-inheriting fork
 
 ## Known decay modes and prevention (maintainers, read this)

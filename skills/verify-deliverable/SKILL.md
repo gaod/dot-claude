@@ -15,7 +15,7 @@ Check every item before claiming completion; one missing item means "not done," 
 
 - [ ] The deliverable exists and is complete (files: read back; code: re-read your own diff)
 - [ ] Acceptance criteria checked one by one (they should have been written at kickoff; if not, write them now, then check)
-- [ ] Verification matches the tier (see §2): mechanical evidence for low-risk work; fresh-context verifier when a trigger fires. **Projects this machine can't run (check `~/.claude/hosts.md` first) may only claim "static checks done, pending CI"**
+- [ ] Verification matches the tier (see §2): mechanical evidence for low-risk work; fresh-context verifier when a trigger fires. **Projects this machine can't run (check `~/.claude/hosts.md` first) may only claim "locally verified" — or "pending CI" if pushing was authorized this session**
 - [ ] Tests and docs updated along with the change (changed behavior without touching tests = not done)
 - [ ] No "should," "probably," or "in theory" qualifying the core conclusions of the report
 
@@ -50,7 +50,7 @@ Authorization is a separate axis: irreversible or externally visible actions fol
 |------|----------|
 | Docs / rules / skill files | Per the tiers above; when a trigger fires, fresh-agent read-back judging each acceptance criterion (use the `verifier` agent; template 5 in the `delegate-work` skill's `templates.md`) |
 | Code (repo this machine can run locally) | Run the module's tests + lint, paste the output |
-| Code (repo this machine can't run, see `~/.claude/hosts.md`) | Static consistency (`rg` against existing conventions) + push and watch `gh pr checks` |
+| Code (repo this machine can't run, see `~/.claude/hosts.md`) | Static consistency (`rg` against existing conventions) + push and watch `gh pr checks` — pushing requires session authorization (iron rule 2); without it, stop at "locally verified" and provide the CI-trigger commands |
 | Batch file edits | Sample read-back ≥ 3 files + `rg` to confirm no stragglers (count check: expected N changes, actual N) |
 | Research conclusions | Every key fact cites a source; no source → mark it "speculation" |
 

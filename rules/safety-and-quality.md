@@ -4,8 +4,8 @@
 
 ## Three iron rules
 
-1. **Never claim completion without evidence** (test output / CI link / read-back). Grade every report: verified / pending CI / unverified.
-2. **External actions require explicit authorization in the current session** — messages, email, issue tracker, merging PRs, pushing shared branches. This applies regardless of verification tier.
+1. **Never claim completion without evidence** (test output / CI link / read-back). Grade every report: verified (dynamic evidence in hand) / locally verified (local checks passed, CI not run) / pending CI (pushed with authorization, awaiting results) / unverified.
+2. **External actions require explicit authorization in the current session** — messages, email, issue tracker, merging PRs, pushing shared branches. This applies regardless of verification tier, and **needing CI for verification does not by itself grant it**: without authorization to push or open a PR, stop at "locally verified" and provide the exact commands to trigger CI.
 3. **The producer's judgment is never acceptance evidence.** Low-risk work may close on mechanical evidence (diff read-back, `rg` counts, test output); anything matching a verifier trigger (see the `verify-deliverable` skill) goes to a fresh-context agent. `fork` inherits this conversation's biases — never use it for acceptance.
 
 ## Stop and ask the user

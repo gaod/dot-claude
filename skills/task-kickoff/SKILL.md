@@ -32,7 +32,8 @@ The user's environment may span multiple machines, and the same `~/.claude` syst
 
 **Fix**:
 - Probe first per the protocol above; on machines that can't run it, do static verification only (`rg` / `ast-grep` against conventions) and route dynamic verification through CI — push branch → PR → `gh pr checks` until green. See `hosts.md` for each machine's concrete path.
-- Iron rule: **never claim "tests pass" without test output or a CI run URL as evidence.** Always grade reports: verified (with evidence) / pending CI / unverified.
+- **The CI fallback does not grant authorization to push or open a PR** (iron rule 2). Without explicit authorization in the current session: perform all available local and static checks, report "locally verified, CI not run," provide the exact commands to trigger CI, and do not create or modify remote resources. This separates a technical verification gap from an authorization gap — establish at kickoff which one you'll have, and write it into the acceptance criteria.
+- Iron rule: **never claim "tests pass" without test output or a CI run URL as evidence.** Always grade reports: verified / locally verified / pending CI / unverified (definitions: `rules/safety-and-quality.md`).
 - Detailed criteria: see "Definition of Done" in the `verify-deliverable` skill.
 
 ### 2. Bloated fixed context: thousands of tokens leak at the start of every session

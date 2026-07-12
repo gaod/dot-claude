@@ -43,7 +43,7 @@ Steps: first use `rg` to list every site needing change and report the count; {i
 Acceptance criteria:
 - `rg '{old pattern}'` returns 0 results
 - Number of sites changed = number counted up front (report both numbers)
-- {test command} all green (if this machine can't run it, say explicitly: pending CI)
+- {test command} all green (if this machine can't run it, say explicitly: locally verified — or pending CI only if pushing is authorized for this task)
 Report format: counted vs. actually changed, verification output, any exceptions you judged should be skipped (with reasons).
 ```
 
