@@ -16,8 +16,8 @@ Check every item before claiming completion; one missing item means "not done," 
 - [ ] The deliverable exists and is complete (files: read back; code: re-read your own diff)
 - [ ] Acceptance criteria checked one by one (they should have been written at kickoff; if not, write them now, then check)
 - [ ] Verification matches the tier (see §2): mechanical evidence for low-risk work; fresh-context verifier when a trigger fires. **Projects this machine can't run (check `~/.claude/hosts.md` first) may only claim "locally verified" — or "pending CI" if pushing was authorized this session**
-- [ ] Tests and docs updated along with the change (changed behavior without touching tests = not done)
-- [ ] No "should," "probably," or "in theory" qualifying the core conclusions of the report
+- [ ] Relevant tests and docs updated along with the change — or explicitly marked **N/A with a concrete reason and alternative evidence** (e.g. existing tests already cover the behavior: cite them; generated config: name the generator; no automated surface: state the manual verification performed). Silent omission = not done
+- [ ] No "should," "probably," or "in theory" qualifying the core conclusions of the report. Uncertainty is stated outright as "unverified" or "speculation" (the report contract's vocabulary) — the ban is on hedging, not on having uncertainty; hiding uncertainty to satisfy this item is a worse violation than a hedge word
 
 ✅ Positive: "Changed 3 files (paths listed), added 2 test cases, pushed to PR #42, CI green: <link>."
 ❌ Negative: "Changes complete, tests should pass." — "should pass" means unverified; that sentence equals "not done."
