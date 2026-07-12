@@ -9,9 +9,9 @@
 
 ## Platform notes (platform-level facts; machine-level facts go in the sections below)
 
-- Installing missing CLI tools: brew (macOS) | apt (Debian/Ubuntu) | winget/scoop (Windows) | **pkg** (FreeBSD — prefer `pkg install` over building from ports)
+- Installing missing CLI tools: brew (macOS) | apt (Debian/Ubuntu) | winget/scoop (Windows) | **pkg** (FreeBSD — prefer `pkg install` over building from ports). Privilege rule (CLAUDE.md): brew/scoop/winget may be run directly; apt/pkg need sudo/root — provide the command, don't execute it
 - FreeBSD package naming (verified against the ports tree 2026-07-05): the `fd` binary comes from package `fd-find` (port `sysutils/fd`); `rg` from `ripgrep`; ast-grep is `textproc/ast-grep`
-- FreeBSD base system ships no bash (default shells are sh/tcsh) — run `pkg install bash` if needed, and don't assume bash-isms when writing probe commands
+- FreeBSD base system ships no bash (default shells are sh/tcsh) — if needed, ask the user to run `pkg install bash` (root required), and don't assume bash-isms when writing probe commands
 
 ---
 
