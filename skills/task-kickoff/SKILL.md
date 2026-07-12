@@ -86,5 +86,5 @@ The user's environment may span multiple machines, and the same `~/.claude` syst
   (Source: code.claude.com/docs/en/memory.md)
 - **Disabling a plugin per project**: in the project's `.claude/settings.json`, write
   `"enabledPlugins": { "<plugin>@<marketplace>": false }` to override the global setting.
-- **`effortLevel`** (settings.json): values `low` / `medium` / `high` / `xhigh`; project level overrides global.
+- **`effortLevel`** (settings.json, session-level): values `low` / `medium` / `high` / `xhigh`; project level overrides global. Distinct from the per-agent `effort` frontmatter field, which additionally accepts `max` — see the `delegate-work` skill's verified findings.
 - **claude.ai-bound MCP connectors** (tool prefix `mcp__claude_ai_*`): **no official mechanism found** for project-level disabling — they can only be disconnected on the claude.ai side. When this matters, confirm with the user first; don't guess at settings.

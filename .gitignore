@@ -1,0 +1,17 @@
+# Machine-specific data written by the AI at runtime — contains hostnames,
+# home/project paths, and auth status. Never commit these to a public repo.
+hosts.md
+lessons.md
+lessons.archive.md
+
+# OS noise
+.DS_Store
+
+# Claude Code runtime state (relevant when ~/.claude itself is this repo)
+local/
+backups/
+projects/
+todos/
+history.jsonl
+settings.local.json
+CLAUDE.local.md

@@ -40,6 +40,8 @@ Evidence must be mechanical — diff read-back, `rg` counts, test/lint output. T
 - Security-sensitive change, data migration, release artifact, cross-module refactor
 - The producer cannot name a mechanical check that would catch its own most likely error
 
+**The middle tier**: work that fails the self-acceptance conditions but fires no verifier trigger (e.g., a 5-file code change with tests) closes on its per-type minimum verification (§3) — tests, lint, counts — without a fresh-context verifier. The per-type minimums are the floor for everything; the verifier is required only when a trigger fires.
+
 Authorization is a separate axis: irreversible or externally visible actions follow iron rule 2 (ask the user) regardless of tier — a verifier PASS is not authorization.
 
 ✅ Positive: fixed two typos in a README (1 file, 4 lines, referenced by nothing) — re-read the diff, done. No verifier needed.

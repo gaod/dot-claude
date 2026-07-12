@@ -42,7 +42,7 @@ Every spawn is a cold start: the subagent knows nothing of what you've discussed
 
 ## Choosing model and effort
 
-Specify the model via the `model` parameter on the Agent call; effort cannot be set per-call — it comes from the agent definition's frontmatter `effort` field (`low`/`medium`/`high`/`xhigh`/`max`; available levels depend on the model) or the session setting. For recurring roles needing a specific effort, create a definition in `~/.claude/agents/*.md` (`verifier` already exists, see `templates.md`).
+Specify the model via the `model` parameter on the Agent call; effort cannot be set per-call — it comes from the agent definition's frontmatter `effort` field (`low`/`medium`/`high`/`xhigh`/`max`; available levels depend on the model) or the session setting. For recurring roles needing a specific effort, create a definition in `~/.claude/agents/*.md` (`verifier` already exists — definition at `~/.claude/agents/verifier.md`, usage in `templates.md` template 5).
 
 | Task | model | Rationale |
 |------|-------|------|
