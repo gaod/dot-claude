@@ -6,6 +6,8 @@
 
 ## 1. Search / locate (subagent_type: `Explore`, no model needed)
 
+> Built-in `Explore` skips CLAUDE.md and inherits the main conversation's model (see SKILL.md verified findings). Restate in the prompt any project convention the search must honor — it won't see the project rules.
+
 ```
 In {repo path}, find {target: definition and all usages of a symbol / all files matching a pattern}.
 Motivation: {why we're looking — so you can judge whether edge cases count}

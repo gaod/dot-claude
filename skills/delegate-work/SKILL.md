@@ -42,7 +42,7 @@ Every spawn is a cold start: the subagent knows nothing of what you've discussed
 
 ## Choosing model and effort
 
-Specify the model via the `model` parameter on the Agent call; effort cannot be set per-call — it comes from the agent definition's frontmatter `effort` field (`low`/`medium`/`high`/`xhigh`) or the global setting. For recurring roles needing a specific effort, create a definition in `~/.claude/agents/*.md` (`verifier` already exists, see `templates.md`).
+Specify the model via the `model` parameter on the Agent call; effort cannot be set per-call — it comes from the agent definition's frontmatter `effort` field (`low`/`medium`/`high`/`xhigh`/`max`; available levels depend on the model) or the session setting. For recurring roles needing a specific effort, create a definition in `~/.claude/agents/*.md` (`verifier` already exists, see `templates.md`).
 
 | Task | model | Rationale |
 |------|-------|------|
@@ -97,11 +97,14 @@ Low-risk work may close on mechanical evidence — diff read-back, `rg` counts, 
 
 The harness warns "don't spawn agents casually (expensive)" — that guards against dispatching for trivia. This skill's thresholds (10 files / 2000 lines / full-repo scan / verifier triggers) are precisely the "worth dispatching" line; there's no conflict: below the threshold do it yourself, above it dispatch.
 
-## Verified findings (checked against official docs 2026-07; re-verify after version changes)
+## Verified findings (checked against official docs 2026-07-12; re-verify after version changes)
 
 - **Subagent definition frontmatter** (supported in both `.claude/agents/*.md` and `~/.claude/agents/*.md`):
-  Available fields include `name`, `description`, `tools`, `model`, `effort`, `maxTurns`, `memory`, etc.
-  `effort` values: `low` / `medium` / `high` / `xhigh` (`max` is session-only, cannot go in frontmatter).
-  `model` values: `haiku` / `sonnet` / `opus` / full model ID / `inherit`.
-  There is no per-subagent thinking setting; subagents inherit the main conversation's thinking configuration.
-  (Source: code.claude.com/docs/en/sub-agents.md, model-config.md)
+  Available fields: `name`, `description` (required); `tools`, `disallowedTools`, `model`, `permissionMode`, `maxTurns`, `skills`, `mcpServers`, `hooks`, `memory`, `background`, `effort`, `isolation`, `color`, `initialPrompt`.
+  `effort` values: `low` / `medium` / `high` / `xhigh` / `max`; available levels depend on the model. Overrides the session effort while the subagent is active; default is inherit.
+  `model` values: `haiku` / `sonnet` / `opus` / `fable` / full model ID / `inherit` (default `inherit`).
+  `isolation: worktree` runs the subagent in a temporary git worktree (isolated copy of the repo; auto-cleaned if unchanged) — useful for broad delegated edits.
+  (Source: code.claude.com/docs/en/sub-agents.md)
+- **Built-in `Explore` inherits the main conversation's model** (v2.1.198+; capped at Opus on the Claude API) — it no longer always runs on Haiku. A user or project agent named `Explore` overrides the built-in; define one with `model: haiku` if you want predictably cheap exploration.
+- **Built-in `Explore` and `Plan` skip CLAUDE.md files and git status.** Any convention the explorer must honor (e.g. "ignore `vendor/`") must be restated in the delegation prompt — it will not see the project rules. All other built-in and custom subagents load CLAUDE.md normally.
+  (Source: code.claude.com/docs/en/sub-agents.md)
