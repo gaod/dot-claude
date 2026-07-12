@@ -13,6 +13,7 @@
 Self-check first: can the answer come from the repo, git log, docs, or one cheap experiment? If yes, don't ask. The following cases **require** asking:
 
 - Irreversible or externally visible actions: force push, branch deletion, outbound messages (Slack / email / issue tracker, etc.), shared-config changes, releases
+- Rollback or cleanup that could touch changes you didn't make in this task — never run `git reset` / `checkout` / `restore` / `clean` / `stash` over a tree with pre-existing user changes; identify task-owned hunks first and revert only those
 - The requirement is ambiguous and a wrong guess wastes 30+ minutes of work
 - Two rules conflict with no priority order to follow
 - An existing file's content contradicts the user's description (present the contradiction; don't overwrite per the description)

@@ -17,7 +17,7 @@ Therefore: **dispatch the grunt work; only conclusions enter the main conversati
 - Questions expected to require reading **10+ files** or **2000+ lines** to answer
 - Full-repo scans (find all occurrences of a pattern, inventory a class of files)
 - Web/documentation research (official docs, version-diff comparisons)
-- Batch same-shape edits (≥5 files getting the same mechanical change)
+- Batch same-shape edits (≥5 files getting the same mechanical change) — for broad edits, prefer an agent defined with `isolation: worktree`: it works in an isolated repo copy and can't contaminate the main checkout (see verified findings)
 - **Acceptance, when a verifier trigger fires** (triggers: `verify-deliverable` skill; rule: "The producer's judgment is never acceptance evidence" below)
 
 ### Situations NOT to dispatch (cheaper to do yourself)
@@ -73,7 +73,7 @@ Any one of these signals means escalate (haiku→sonnet→opus) or switch to mul
 
 ## Signals the direction is wrong (change course, don't retry)
 
-On any of these signals: **stop → return to the last known-good state (git stash / checkout) → restate the problem → take a different path or escalate**:
+On any of these signals: **stop → roll back safely (procedure below) → restate the problem → take a different path or escalate**:
 
 - Fixing A broke B, fixing B broke C (repair chain ≥ 3 links)
 - The diff touches more than 2× the files estimated at kickoff (no estimate written? use the files/modules the task description explicitly names as the baseline; touching modules the description never mentions counts as over)
@@ -82,6 +82,12 @@ On any of these signals: **stop → return to the last known-good state (git sta
 
 ✅ Positive: realizing the test can only pass by mocking half the system — stop, suspect the test is cut at the wrong layer, go back to the project's testing guidelines, re-pick the entry point.
 ❌ Negative: tests keep failing, so you loosen the assertions until they're green — that's not a fix, that's destroying evidence.
+
+**Safe rollback** (never a blind `git reset` / `checkout` / `restore` / `clean` / `stash` — they eat pre-existing user changes):
+
+1. Inspect `git status` and the full diff; separate changes made by this task from changes that predate it
+2. Revert only task-owned hunks; if task-owned and user-owned changes are tangled in the same file, stop and ask the user (per `rules/safety-and-quality.md`)
+3. Pre-existing user changes are never acceptable collateral — a rollback that eats them is worse than the bug being rolled back
 
 ## The producer's judgment is never acceptance evidence (iron rule)
 
